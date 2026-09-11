@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'events',
     'referrals',
     'dashboard',
+    'bookings',
 
 ]
 
