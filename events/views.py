@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAdminUser
 
 from .models import Event
+from django.db.models import Q
 from .serializers import EventSerializer
 
 
@@ -17,7 +18,8 @@ class EventListCreateView(generics.ListCreateAPIView):
 
         if search:
             queryset = queryset.filter(
-                title__icontains=search
+                Q(title__icontains=search) |
+                Q(venue__icontains=search)
             )
 
         if venue:

@@ -50,17 +50,18 @@ def web_login(request):
             password=password
         )
 
-        if user is not None:
-
+        if user is not None and user.is_staff:
             login(request, user)
-
             return redirect('dashboard_home')
 
-        return render(
-            request,
-            'accounts/login.html',
-            {'error': 'Invalid username or password'}
-        )
+        return render(request,'accounts/login.html',
+            {
+                'error': (
+                    'Invalid credentials or you do not have '
+                    'staff access.'
+                )
+            }
+)
 
     return render(request, 'accounts/login.html')
 

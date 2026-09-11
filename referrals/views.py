@@ -22,12 +22,13 @@ class ReferralTreeView(APIView):
             referrals = current_user.referrals.all()
 
             return {
-                "id": current_user.id,
-                "username": current_user.username,
-                "referral_code": current_user.referral_code,
-                "children": [
-                    build_tree(referral)
-                    for referral in referrals
+            "id": current_user.id,
+            "username": current_user.username,
+            "referral_code": current_user.referral_code,
+            "referral_position": current_user.referral_position,
+            "children": [
+                build_tree(referral)
+                for referral in referrals
                 ]
             }
 

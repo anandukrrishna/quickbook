@@ -15,7 +15,9 @@ def create_booking(user, event_id, number_of_tickets):
         })
 
     try:
-        event = Event.objects.select_for_update().get(id=event_id)
+        event = Event.objects.select_for_update().get(
+            id=event_id
+        )
 
     except Event.DoesNotExist:
         raise ValidationError({
@@ -29,7 +31,10 @@ def create_booking(user, event_id, number_of_tickets):
         })
 
     event.available_seats -= number_of_tickets
-    event.save()
+
+    event.save(
+        update_fields=['available_seats']
+    )
 
     booking = Booking.objects.create(
         user=user,
@@ -43,19 +48,29 @@ def create_booking(user, event_id, number_of_tickets):
 @transaction.atomic
 def cancel_booking(booking):
 
+    booking = Booking.objects.select_for_update().get(
+        id=booking.id
+    )
+
     if booking.status == 'CANCELLED':
         raise ValidationError({
             "detail": "Booking is already cancelled."
         })
 
     event = Event.objects.select_for_update().get(
-        id=booking.event.id
+        id=booking.event_id
     )
 
     event.available_seats += booking.number_of_tickets
-    event.save()
+
+    event.save(
+        update_fields=['available_seats']
+    )
 
     booking.status = 'CANCELLED'
-    booking.save()
+
+    booking.save(
+        update_fields=['status']
+    )
 
     return booking
