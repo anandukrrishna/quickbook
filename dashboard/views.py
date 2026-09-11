@@ -348,7 +348,10 @@ def user_list(request):
 def user_detail(request, user_id):
 
     if not request.user.is_staff:
-        return render(request, 'dashboard/access_denied.html')
+        return render(
+            request,
+            'dashboard/access_denied.html'
+        )
 
     user = get_object_or_404(
         User,
@@ -360,7 +363,9 @@ def user_detail(request, user_id):
         total = 0
 
         for referral in current_user.referrals.all():
+
             total += 1
+
             total += count_team(referral)
 
         return total
@@ -383,22 +388,59 @@ def user_detail(request, user_id):
         if right_user else 0
     )
 
-
-
-
     def build_tree(current_user):
 
         referrals = current_user.referrals.all()
 
         return {
             'user': current_user,
+
             'children': [
                 build_tree(referral)
                 for referral in referrals
             ]
         }
 
+
     referral_tree = build_tree(user)
+
+
+    def get_all_referrals(current_user):
+
+        referrals_list = []
+
+        for referral in current_user.referrals.all():
+
+            referrals_list.append(referral)
+
+            referrals_list.extend(
+                get_all_referrals(referral)
+            )
+
+        return referrals_list
+
+
+    search = request.GET.get(
+        'search',
+        ''
+    ).strip()
+
+
+    search_results = []
+
+
+    if search:
+
+        all_referrals = get_all_referrals(user)
+
+        for referral in all_referrals:
+
+            if (
+                search.lower() in referral.username.lower()
+                or search.lower() in referral.email.lower()
+            ):
+
+                search_results.append(referral)
 
 
     return render(
@@ -406,8 +448,15 @@ def user_detail(request, user_id):
         'dashboard/user_detail.html',
         {
             'user': user,
+
             'left_team_count': left_team_count,
+
             'right_team_count': right_team_count,
+
             'referral_tree': referral_tree,
+
+            'search': search,
+
+            'search_results': search_results,
         }
     )
