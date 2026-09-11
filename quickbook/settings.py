@@ -144,3 +144,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+LOGIN_URL = '/api/auth/web-login/'

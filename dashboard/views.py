@@ -14,7 +14,7 @@ from events.models import Event
 from bookings.models import Booking
 
 
-@login_required(login_url='/accounts/web-login/')
+@login_required
 @never_cache
 def dashboard_home(request):
 
