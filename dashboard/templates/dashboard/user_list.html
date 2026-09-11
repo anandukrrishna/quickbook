@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Management</title>
+</head>
+
+<body>
+
+    <h1>User Management</h1>
+
+    <hr>
+
+    <!-- Search -->
+
+    <form method="GET">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search username or email"
+            value="{{ search|default:'' }}"
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+        <a href="{% url 'user_list' %}">
+            Clear
+        </a>
+
+    </form>
+
+    <br>
+
+    <!-- Users Table -->
+
+    <table border="1" cellpadding="10">
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Referral Code</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for user in page_obj %}
+
+            <tr>
+
+                <td>
+                    {{ user.id }}
+                </td>
+
+                <td>
+                    {{ user.username }}
+                </td>
+
+                <td>
+                    {{ user.email }}
+                </td>
+
+                <td>
+                    {{ user.role }}
+                </td>
+
+                <td>
+                    {{ user.referral_code }}
+                </td>
+
+                <td>
+
+                    <a
+                        href="{% url 'user_detail' user.id %}"
+                    >
+                        View
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td colspan="6">
+                    No users found.
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+
+    <br>
+
+
+    <!-- Pagination -->
+
+    {% if page_obj.has_previous %}
+
+        <a
+            href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}"
+        >
+            Previous
+        </a>
+
+    {% endif %}
+
+
+    <span>
+
+        Page {{ page_obj.number }}
+
+        of
+
+        {{ page_obj.paginator.num_pages }}
+
+    </span>
+
+
+    {% if page_obj.has_next %}
+
+        <a
+            href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}"
+        >
+            Next
+        </a>
+
+    {% endif %}
+
+
+    <br><br>
+
+
+    <a href="{% url 'dashboard_home' %}">
+        Back to Dashboard
+    </a>
+
+</body>
+</html>

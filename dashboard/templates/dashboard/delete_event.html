@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Event - QuickBook</title>
+</head>
+<body>
+
+    <h1>Delete Event</h1>
+
+    <hr>
+
+    <p>
+        Are you sure you want to delete
+        <strong>{{ event.title }}</strong>?
+    </p>
+
+    <p>
+        Venue: {{ event.venue }}
+    </p>
+
+    <p>
+        Date: {{ event.date }}
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <button type="submit">
+            Yes, Delete Event
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'event_list' %}">
+        Cancel
+    </a>
+
+</body>
+</html>

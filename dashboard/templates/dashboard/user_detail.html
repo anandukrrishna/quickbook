@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Details</title>
+</head>
+
+<body>
+
+    <h1>User Details</h1>
+
+    <p><strong>ID:</strong> {{ user.id }}</p>
+
+    <p><strong>Username:</strong> {{ user.username }}</p>
+
+    <p><strong>Email:</strong> {{ user.email }}</p>
+
+    <p><strong>Role:</strong> {{ user.role }}</p>
+
+    <p>
+        <strong>Referral Code:</strong>
+        {{ user.referral_code }}
+    </p>
+
+    <p>
+        <strong>Referred By:</strong>
+
+        {% if user.referred_by %}
+        {{ user.referred_by.username }}
+        {% else %}
+        No Referrer
+        {% endif %}
+    </p>
+
+    <br>
+
+    <h2>Referral Statistics</h2>
+
+    <p>
+        <strong>Left Team:</strong>
+        {{ left_team_count }}
+    </p>
+
+    <p>
+        <strong>Right Team:</strong>
+        {{ right_team_count }}
+    </p>
+
+    <br>
+
+    <h2>Referral Tree</h2>
+
+    <ul>
+        {% include "dashboard/referral_tree.html" with node=referral_tree %}
+    </ul>
+
+    <br>
+
+    <a href="{% url 'user_list' %}">
+        Back to Users
+    </a>
+
+</body>
+
+</html>

@@ -4,11 +4,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-
 from .models import User
 from .serializers import RegisterSerializer
-
-
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -37,3 +36,36 @@ class LogoutView(generics.GenericAPIView):
                 {"detail": "Invalid or expired refresh token."},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+def web_login(request):
+
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if user is not None:
+
+            login(request, user)
+
+            return redirect('dashboard_home')
+
+        return render(
+            request,
+            'accounts/login.html',
+            {'error': 'Invalid username or password'}
+        )
+
+    return render(request, 'accounts/login.html')
+
+def web_logout(request):
+
+    logout(request)
+
+    return redirect('web_login')

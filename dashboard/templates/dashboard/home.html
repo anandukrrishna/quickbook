@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>QuickBook Staff Dashboard</title>
 </head>
@@ -8,11 +9,19 @@
 
     <h1>QuickBook Staff Dashboard</h1>
 
+    <a href="{% url 'web_logout' %}">Logout</a>
+
     <p>
         Welcome, {{ request.user.username }}
     </p>
 
     <hr>
+
+    <br>
+
+    <a href="{% url 'user_list' %}">
+        Manage Users
+    </a>
 
     <h2>Dashboard Statistics</h2>
 
@@ -37,4 +46,5 @@
     </p>
 
 </body>
+
 </html>

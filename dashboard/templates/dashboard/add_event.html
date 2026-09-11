@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Event - QuickBook</title>
+</head>
+<body>
+
+    <h1>Add Event</h1>
+
+    <hr>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <p>
+            <label>Vendor:</label><br>
+
+            <select name="vendor" required>
+
+                <option value="">
+                    Select Vendor
+                </option>
+
+                {% for vendor in vendors %}
+
+                    <option value="{{ vendor.id }}">
+                        {{ vendor.username }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </p>
+
+
+        <p>
+            <label>Title:</label><br>
+
+            <input
+                type="text"
+                name="title"
+                required
+            >
+        </p>
+
+
+        <p>
+            <label>Description:</label><br>
+
+            <textarea
+                name="description"
+                required
+            ></textarea>
+        </p>
+
+
+        <p>
+            <label>Venue:</label><br>
+
+            <input
+                type="text"
+                name="venue"
+                required
+            >
+        </p>
+
+
+        <p>
+            <label>Date:</label><br>
+
+            <input
+                type="datetime-local"
+                name="date"
+                required
+            >
+        </p>
+
+
+        <p>
+            <label>Total Seats:</label><br>
+
+            <input
+                type="number"
+                name="total_seats"
+                min="1"
+                required
+            >
+        </p>
+
+
+        <button type="submit">
+            Add Event
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'event_list' %}">
+        Back to Events
+    </a>
+
+</body>
+</html>

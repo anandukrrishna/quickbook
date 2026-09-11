@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events - QuickBook</title>
+</head>
+<body>
+
+    <h1>Event Management</h1>
+
+    <a href="{% url 'add_event' %}">
+        Add Event
+    </a>
+
+    <hr>
+
+    <form method="GET">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search events"
+            value="{{ search|default:'' }}"
+        >
+
+        <input
+            type="text"
+            name="venue"
+            placeholder="Filter by venue"
+            value="{{ venue|default:'' }}"
+        >
+
+        <button type="submit">
+            Search
+        </button>
+
+        <a href="{% url 'event_list' %}">
+            Clear
+        </a>
+
+    </form>
+
+    <br>
+
+    {% if page_obj %}
+
+        <table border="1" cellpadding="10">
+
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Venue</th>
+                <th>Date</th>
+                <th>Vendor</th>
+                <th>Available Seats</th>
+                <th>Action</th>
+            </tr>
+
+            {% for event in page_obj %}
+
+            <tr>
+                <td>{{ event.id }}</td>
+                <td>{{ event.title }}</td>
+                <td>{{ event.venue }}</td>
+                <td>{{ event.date }}</td>
+
+                <td>
+                    {{ event.vendor.username }}
+                </td>
+
+                <td>
+                    {{ event.available_seats }}
+                    /
+                    {{ event.total_seats }}
+                </td>
+
+                <td>
+
+                    <a href="{% url 'edit_event' event.id %}">
+                        Edit
+                    </a>
+
+                    |
+
+                    <a href="{% url 'delete_event' event.id %}">
+                        Delete
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        <br>
+
+        <!-- Pagination -->
+
+        {% if page_obj.has_previous %}
+
+            <a href="?page=1">
+                First
+            </a>
+
+            <a href="?page={{ page_obj.previous_page_number }}">
+                Previous
+            </a>
+
+        {% endif %}
+
+
+        Page {{ page_obj.number }}
+        of {{ page_obj.paginator.num_pages }}
+
+
+        {% if page_obj.has_next %}
+
+            <a href="?page={{ page_obj.next_page_number }}">
+                Next
+            </a>
+
+            <a href="?page={{ page_obj.paginator.num_pages }}">
+                Last
+            </a>
+
+        {% endif %}
+
+    {% else %}
+
+        <p>No events found.</p>
+
+    {% endif %}
+
+    <br><br>
+
+    <a href="{% url 'dashboard_home' %}">
+        Back to Dashboard
+    </a>
+
+</body>
+</html>

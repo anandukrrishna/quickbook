@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Event - QuickBook</title>
+</head>
+<body>
+
+    <h1>Edit Event</h1>
+
+    <hr>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <p>
+            <label>Vendor:</label><br>
+
+            <select name="vendor" required>
+
+                {% for vendor in vendors %}
+
+                    <option
+                        value="{{ vendor.id }}"
+
+                        {% if vendor.id == event.vendor.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ vendor.username }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+        </p>
+
+
+        <p>
+            <label>Title:</label><br>
+
+            <input
+                type="text"
+                name="title"
+                value="{{ event.title }}"
+                required
+            >
+        </p>
+
+
+        <p>
+            <label>Description:</label><br>
+
+            <textarea
+                name="description"
+                required
+            >{{ event.description }}</textarea>
+        </p>
+
+
+        <p>
+            <label>Venue:</label><br>
+
+            <input
+                type="text"
+                name="venue"
+                value="{{ event.venue }}"
+                required
+            >
+        </p>
+
+
+        <p>
+            <label>Date:</label><br>
+
+            <input
+                type="datetime-local"
+                name="date"
+                value="{{ event.date|date:'Y-m-d\\TH:i' }}"
+                required
+            >
+        </p>
+
+
+        <p>
+            <label>Total Seats:</label><br>
+
+            <input
+                type="number"
+                name="total_seats"
+                value="{{ event.total_seats }}"
+                min="1"
+                required
+            >
+        </p>
+
+
+        <button type="submit">
+            Update Event
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'event_list' %}">
+        Back to Events
+    </a>
+
+</body>
+</html>
