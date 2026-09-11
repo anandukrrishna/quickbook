@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
 
-
 class User(AbstractUser):
     referral_code = models.CharField(
         max_length=20,
@@ -10,7 +9,6 @@ class User(AbstractUser):
         blank=True,
         null=True
     )
-
     referred_by = models.ForeignKey(
         'self',
         on_delete=models.SET_NULL,
@@ -18,7 +16,6 @@ class User(AbstractUser):
         blank=True,
         related_name='referrals'
     )
-
     referral_position = models.CharField(
         max_length=5,
         choices=[
