@@ -87,8 +87,8 @@ class ReferralStatsView(APIView):
             referral_position='RIGHT'
         ).first()
 
-        left_count = count_team(left_user) if left_user else 0
-        right_count = count_team(right_user) if right_user else 0
+        left_count = 1 + count_team(left_user) if left_user else 0
+        right_count = 1 + count_team(right_user) if right_user else 0
 
         return Response({
             "user_id": user.id,
