@@ -3,7 +3,10 @@ from .models import User
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+
+    password = serializers.CharField(
+        write_only=True
+    )
 
     referred_by_code = serializers.CharField(
         write_only=True,
@@ -11,7 +14,9 @@ class RegisterSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+
         model = User
+
         fields = [
             'id',
             'username',
@@ -24,9 +29,15 @@ class RegisterSerializer(serializers.ModelSerializer):
             'referral_position',
         ]
 
-        read_only_fields = ['id', 'referral_code','referral_position',]
+        read_only_fields = [
+            'id',
+            'referral_code',
+            'referral_position',
+        ]
+
 
     def create(self, validated_data):
+
         password = validated_data.pop('password')
 
         referred_by_code = validated_data.pop(
@@ -34,44 +45,84 @@ class RegisterSerializer(serializers.ModelSerializer):
             None
         )
 
+
         user = User(**validated_data)
+
         user.set_password(password)
 
+
         if referred_by_code:
+
             try:
+
                 referrer = User.objects.get(
                     referral_code=referred_by_code
                 )
 
-                left_user_exists = User.objects.filter(
-                    referred_by=referrer,
+
+                placement_user = self.find_available_position(
+                    referrer
+                )
+
+
+                user.referred_by = placement_user
+
+
+                left_exists = User.objects.filter(
+                    referred_by=placement_user,
                     referral_position='LEFT'
                 ).exists()
 
-                right_user_exists = User.objects.filter(
-                    referred_by=referrer,
-                    referral_position='RIGHT'
-                ).exists()
 
-                user.referred_by = referrer
+                if not left_exists:
 
-                if not left_user_exists:
                     user.referral_position = 'LEFT'
 
-                elif not right_user_exists:
+                else:
+
                     user.referral_position = 'RIGHT'
 
-                else:
-                    raise serializers.ValidationError({
-                        'referred_by_code':
-                        'This referral user already has both positions filled.'
-                    })
 
             except User.DoesNotExist:
+
                 raise serializers.ValidationError({
-                    'referred_by_code': 'Invalid referral code.'
+                    'referred_by_code':
+                    'Invalid referral code.'
                 })
+
 
         user.save()
 
         return user
+
+
+    def find_available_position(self, referrer):
+
+        queue = [referrer]
+
+
+        while queue:
+
+            current_user = queue.pop(0)
+
+
+            left_user = User.objects.filter(
+                referred_by=current_user,
+                referral_position='LEFT'
+            ).first()
+
+
+            right_user = User.objects.filter(
+                referred_by=current_user,
+                referral_position='RIGHT'
+            ).first()
+
+
+            if not left_user or not right_user:
+
+                return current_user
+
+
+            queue.append(left_user)
+
+            queue.append(right_user)

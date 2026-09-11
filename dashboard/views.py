@@ -6,6 +6,9 @@ from django.db.models import Q
 from django.utils.dateparse import parse_datetime
 from django.utils import timezone
 
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+
 from accounts.models import User
 from events.models import Event
 from bookings.models import Booking
