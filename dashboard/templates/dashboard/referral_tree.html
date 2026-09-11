@@ -1,15 +1,31 @@
-<li>
+<li class="mb-2">
+
     {% if node.user.referral_position %}
-        <strong>{{ node.user.referral_position }}:</strong>
+
+    <span class="badge text-bg-primary">
+        {{ node.user.referral_position }}
+    </span>
+
     {% endif %}
 
-    {{ node.user.username }}
+
+    <strong>
+        {{ node.user.username }}
+    </strong>
+
 
     {% if node.children %}
-        <ul>
-            {% for child in node.children %}
-                {% include "dashboard/referral_tree.html" with node=child %}
-            {% endfor %}
-        </ul>
+
+    <ul class="mt-2">
+
+        {% for child in node.children %}
+
+        {% include "dashboard/referral_tree.html" with node=child %}
+
+        {% endfor %}
+
+    </ul>
+
     {% endif %}
+
 </li>

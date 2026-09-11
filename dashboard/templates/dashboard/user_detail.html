@@ -2,63 +2,202 @@
 <html>
 
 <head>
-    <title>User Details</title>
+    <title>User Details - QuickBook</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body>
 
-    <h1>User Details</h1>
+<body class="bg-light">
 
-    <p><strong>ID:</strong> {{ user.id }}</p>
+    <div class="container py-5">
 
-    <p><strong>Username:</strong> {{ user.username }}</p>
 
-    <p><strong>Email:</strong> {{ user.email }}</p>
+        <!-- Header -->
 
-    <p><strong>Role:</strong> {{ user.role }}</p>
+        <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <p>
-        <strong>Referral Code:</strong>
-        {{ user.referral_code }}
-    </p>
+            <h1 class="mb-0">
+                User Details
+            </h1>
 
-    <p>
-        <strong>Referred By:</strong>
+            <a href="{% url 'user_list' %}" class="btn btn-secondary">
+                Back to Users
+            </a>
 
-        {% if user.referred_by %}
-        {{ user.referred_by.username }}
-        {% else %}
-        No Referrer
-        {% endif %}
-    </p>
+        </div>
 
-    <br>
 
-    <h2>Referral Statistics</h2>
+        <div class="row g-4">
 
-    <p>
-        <strong>Left Team:</strong>
-        {{ left_team_count }}
-    </p>
 
-    <p>
-        <strong>Right Team:</strong>
-        {{ right_team_count }}
-    </p>
+            <!-- User Information -->
 
-    <br>
+            <div class="col-md-6">
 
-    <h2>Referral Tree</h2>
+                <div class="card shadow-sm h-100">
 
-    <ul>
-        {% include "dashboard/referral_tree.html" with node=referral_tree %}
-    </ul>
+                    <div class="card-body">
 
-    <br>
+                        <h4 class="mb-4">
+                            User Information
+                        </h4>
 
-    <a href="{% url 'user_list' %}">
-        Back to Users
-    </a>
+
+                        <table class="table">
+
+                            <tr>
+                                <th>ID</th>
+                                <td>{{ user.id }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Username</th>
+                                <td>{{ user.username }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ user.email }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Role</th>
+                                <td>
+                                    <span class="badge text-bg-secondary">
+                                        {{ user.role }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Referral Code</th>
+                                <td>{{ user.referral_code }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Referred By</th>
+
+                                <td>
+
+                                    {% if user.referred_by %}
+
+                                    {{ user.referred_by.username }}
+
+                                    {% else %}
+
+                                    <span class="text-muted">
+                                        No Referrer
+                                    </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Referral Statistics -->
+
+            <div class="col-md-6">
+
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-body">
+
+                        <h4 class="mb-4">
+                            Referral Statistics
+                        </h4>
+
+
+                        <div class="row text-center">
+
+
+                            <div class="col-6">
+
+                                <div class="border rounded p-4">
+
+                                    <p class="text-muted mb-2">
+                                        Left Team
+                                    </p>
+
+                                    <h2>
+                                        {{ left_team_count }}
+                                    </h2>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-6">
+
+                                <div class="border rounded p-4">
+
+                                    <p class="text-muted mb-2">
+                                        Right Team
+                                    </p>
+
+                                    <h2>
+                                        {{ right_team_count }}
+                                    </h2>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Referral Tree -->
+
+            <div class="col-12">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <h4 class="mb-4">
+                            Referral Tree
+                        </h4>
+
+
+                        <div class="p-3 border rounded bg-white">
+
+                            <ul class="mb-0">
+
+                                {% include "dashboard/referral_tree.html" with node=referral_tree %}
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
 
 </body>
 
