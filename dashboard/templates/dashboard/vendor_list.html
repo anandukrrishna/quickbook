@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vendors - QuickBook</title>
+</head>
+
+<body>
+
+    <h1>Vendor Management</h1>
+
+    <hr>
+
+    <a href="{% url 'add_vendor' %}">Add Vendor</a>
+
+    <h2>All Vendors</h2>
+
+    {% if vendors %}
+    <table border="1" cellpadding="10">
+
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+
+        {% for vendor in vendors %}
+        <tr>
+            <td>{{ vendor.id }}</td>
+            <td>{{ vendor.username }}</td>
+            <td>{{ vendor.email }}</td>
+            <td>
+                <a href="{% url 'edit_vendor' vendor.id %}">
+                    Edit
+                </a>
+
+                <a href="{% url 'delete_vendor' vendor.id %}">
+                    Delete
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <p>No vendors found.</p>
+
+    {% endif %}
+
+</body>
+
+</html>

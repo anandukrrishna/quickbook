@@ -1,7 +1,18 @@
 from django.db import models
+from accounts.models import User
 
 
 class Event(models.Model):
+
+    vendor = models.ForeignKey(
+    User,
+    on_delete=models.CASCADE,
+    related_name='events',
+    limit_choices_to={'role': 'VENDOR'},
+    null=True,
+    blank=True
+    )
+
     title = models.CharField(max_length=255)
 
     description = models.TextField()

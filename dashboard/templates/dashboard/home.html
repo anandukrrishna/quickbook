@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>QuickBook Dashboard</title>
+    <title>QuickBook Staff Dashboard</title>
 </head>
+
 <body>
 
     <h1>QuickBook Staff Dashboard</h1>
 
-    <p>Welcome, {{ request.user.username }}</p>
+    <p>
+        Welcome, {{ request.user.username }}
+    </p>
+
+    <hr>
+
+    <h2>Dashboard Statistics</h2>
+
+    <p>
+        <strong>Total Customers:</strong>
+        {{ total_customers }}
+    </p>
+
+    <p>
+        <strong>Total Vendors:</strong>
+        {{ total_vendors }}
+    </p>
+
+    <p>
+        <strong>Total Events:</strong>
+        {{ total_events }}
+    </p>
+
+    <p>
+        <strong>Total Bookings:</strong>
+        {{ total_bookings }}
+    </p>
 
 </body>
 </html>

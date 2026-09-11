@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Vendor - QuickBook</title>
+</head>
+<body>
+
+    <h1>Delete Vendor</h1>
+
+    <hr>
+
+    <p>
+        Are you sure you want to delete
+        <strong>{{ vendor.username }}</strong>?
+    </p>
+
+    <p>
+        Email: {{ vendor.email }}
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <button type="submit">
+            Yes, Delete Vendor
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'vendor_list' %}">
+        Cancel
+    </a>
+
+</body>
+</html>

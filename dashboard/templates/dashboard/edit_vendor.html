@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Vendor - QuickBook</title>
+</head>
+<body>
+
+    <h1>Edit Vendor</h1>
+
+    <hr>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <p>
+            <label>Username:</label><br>
+            <input
+                type="text"
+                name="username"
+                value="{{ vendor.username }}"
+                required
+            >
+        </p>
+
+        <p>
+            <label>Email:</label><br>
+            <input
+                type="email"
+                name="email"
+                value="{{ vendor.email }}"
+                required
+            >
+        </p>
+
+        <button type="submit">Update Vendor</button>
+
+    </form>
+
+    <br>
+
+    <a href="{% url 'vendor_list' %}">Back to Vendors</a>
+
+</body>
+</html>
